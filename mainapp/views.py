@@ -10,31 +10,6 @@ class HelloWorldView(View):
 def check_kwargs(request, **kwargs):
     return HttpResponse(f"kwargs:<br>{kwargs}")
 
-from django.views.generic import TemplateView
-
-
-class MainPageView(TemplateView):
-    template_name = "mainapp/index.html"
-
-
-class NewsPageView(TemplateView):
-    template_name = "mainapp/news.html"
-
-
-class CoursesPageView(TemplateView):
-    template_name = "mainapp/courses_list.html"
-
-
-class ContactsPageView(TemplateView):
-    template_name = "mainapp/contacts.html"
-
-
-class DocSitePageView(TemplateView):
-    template_name = "mainapp/doc_site.html"
-
-from django.views.generic import TemplateView
-
-
 from datetime import datetime
 
 from django.views.generic import TemplateView
@@ -55,6 +30,13 @@ class NewsPageView(TemplateView):
         context["news_preview"] = "Предварительное описание, которое заинтересует каждого"
         context["range"] = range(5)
         context["datetime_obj"] = datetime.now()
+        return context
+
+
+class NewsWithPaginatorView(NewsPageView):
+    def get_context_data(self, page, **kwargs):
+        context = super().get_context_data(page=page, **kwargs)
+        context["page_num"] = page
         return context
 
 
